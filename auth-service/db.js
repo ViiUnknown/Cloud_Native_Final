@@ -1,6 +1,3 @@
-// auth-service/db.js
-// Shared Mongo connection helper. The URI MUST already contain the DB name
-// (e.g. ...mongodb.net/foodordering?...) or Mongoose defaults to "test".
 const mongoose = require('mongoose');
 
 async function connectDB(uri) {

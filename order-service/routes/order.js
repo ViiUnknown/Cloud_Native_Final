@@ -1,9 +1,3 @@
-// order-service/routes/order.js
-// Gateway strips /admin or /customer, so these are short sub-routes:
-//   POST /order              (customer create)
-//   GET  /order              (admin -> all orders, customer -> own orders, by x-user-role)
-//   PUT  /order/:id/accept   (admin accept)
-//   PUT  /order/:id/status   (admin update status)
 const express = require('express');
 const Order = require('../models/Order');
 

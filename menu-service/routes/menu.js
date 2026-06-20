@@ -1,16 +1,9 @@
-// menu-service/routes/menu.js
-// Gateway strips /admin or /customer, so these are short sub-routes:
-//   POST   /menu        (admin add)
-//   PUT    /menu/:id    (admin update)
-//   DELETE /menu/:id    (admin delete)
-//   GET    /menu        (customer browse)
-//   POST   /cart        (customer add to cart)
 const express = require('express');
 const Menu = require('../models/Menu');
 
 const router = express.Router();
 
-// admin: add menu item
+// admin: add menu item (name, price, availability status)
 router.post('/menu', async (req, res) => {
   try {
     const { name, price, available } = req.body || {};

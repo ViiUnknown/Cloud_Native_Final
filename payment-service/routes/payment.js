@@ -1,13 +1,3 @@
-// payment-service/routes/payment.js
-// Gateway strips /admin or /customer, so these are short sub-routes:
-//   POST /payment            (customer make payment, body has paymentMethod)
-//   GET  /payment/status     (customer view own payment status)
-//   GET  /payment/history    (customer view own payment history)
-//   GET  /payment            (admin view all payments)
-//   PUT  /payment/:id        (admin change status - e.g. confirm cash)
-//
-// NOTE: literal routes (/payment/status, /payment/history) are declared BEFORE
-// the /payment/:id param route so Express never mis-matches them.
 const express = require('express');
 const Payment = require('../models/Payment');
 

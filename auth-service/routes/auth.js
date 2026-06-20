@@ -1,7 +1,3 @@
-// auth-service/routes/auth.js
-// The gateway mounts at /auth and strips the prefix, so these are short sub-routes:
-//   POST /reg     (from POST /auth/reg)
-//   POST /login   (from POST /auth/login)
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -10,7 +6,7 @@ const User = require('../models/User');
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'change_me_in_env';
 
-// Register a new user.
+// Register a new user (username, password, role)
 router.post('/reg', async (req, res) => {
   try {
     const { username, password, role } = req.body || {};
@@ -33,7 +29,7 @@ router.post('/reg', async (req, res) => {
   }
 });
 
-// Login -> issue JWT containing userId and role. Wrong creds -> 401.
+// Login (username, password)
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body || {};

@@ -1,21 +1,18 @@
-// api-gateway/middleware/auth.js
-// JWT verification + role-based authorization. This lives ONLY in the gateway.
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change_me_in_env';
 
-// Verify "Authorization: Bearer <token>". On any failure -> 401.
+// Token check
 function authenticate(req, res, next) {
   const header = req.headers['authorization'] || '';
   const [scheme, token] = header.split(' ');
-
+s
   if (scheme !== 'Bearer' || !token) {
     return res.status(401).json({ error: 'Missing or malformed Authorization header' });
   }
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    // Normalised user object forwarded downstream via headers later.
     req.user = { userId: payload.userId, role: payload.role };
     return next();
   } catch (err) {
@@ -23,7 +20,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// Wrong-role token on a protected route -> 403.
+// Role check
 function requireRole(role) {
   return (req, res, next) => {
     if (!req.user || req.user.role !== role) {
