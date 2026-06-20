@@ -1,0 +1,14 @@
+{
+  "name": "payment-service",
+  "version": "1.0.0",
+  "description": "Payment service - customer make/view/history + admin view/change-status. Trusts gateway headers.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}

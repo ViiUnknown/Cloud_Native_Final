@@ -1,0 +1,120 @@
+# docker-compose.yml
+# Builds and runs all 5 microservices on a shared network.
+# Only the gateway is published to the host (3000) so ALL client traffic
+# is forced through the gateway. menu-service runs as TWO replicas so the
+# gateway's round-robin load balancing is demonstrable.
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - ORDER_SERVICE_URL=http://order-service:3003
+      - PAYMENT_SERVICE_URL=http://payment-service:3004
+      - MENU_SERVICE_URLS=http://menu-service-1:3002,http://menu-service-2:3002
+    depends_on:
+      - auth-service
+      - menu-service-1
+      - menu-service-2
+      - order-service
+      - payment-service
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    env_file:
+      - .env
+    environment:
+      - PORT=3001
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  menu-service-1:
+    build: ./menu-service
+    container_name: menu-service-1
+    env_file:
+      - .env
+    environment:
+      - PORT=3002
+      - INSTANCE_NAME=menu-service-1
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  menu-service-2:
+    build: ./menu-service
+    container_name: menu-service-2
+    env_file:
+      - .env
+    environment:
+      - PORT=3002
+      - INSTANCE_NAME=menu-service-2
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    env_file:
+      - .env
+    environment:
+      - PORT=3003
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    env_file:
+      - .env
+    environment:
+      - PORT=3004
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  foodnet:
+    driver: bridge
