@@ -6,7 +6,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'change_me_in_env';
 function authenticate(req, res, next) {
   const header = req.headers['authorization'] || '';
   const [scheme, token] = header.split(' ');
-s
   if (scheme !== 'Bearer' || !token) {
     return res.status(401).json({ error: 'Missing or malformed Authorization header' });
   }

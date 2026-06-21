@@ -53,6 +53,9 @@ function resolveTarget(req, res, prefixLabel) {
   return null;
 }
 
+app.get('/health', (req, res) => res.json({ status: 'ok', service: INSTANCE }));
+
+
 app.use('/auth', (req, res) => {
     console.log(`[GATEWAY] /auth${req.url} -> ${AUTH_URL}`);
     proxy.web(req, res, { target: AUTH_URL });
