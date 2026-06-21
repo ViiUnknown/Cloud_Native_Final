@@ -1,0 +1,46 @@
+services:
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - AUTH_SERVICE_URL=http://localhost:3001
+      - ORDER_SERVICE_URL=http://<EC2-2-PRIVATE-IP>:3003
+      - PAYMENT_SERVICE_URL=http://<EC2-3-PRIVATE-IP>:3004
+      - MENU_SERVICE_URLS=http://<EC2-2-PRIVATE-IP>:3002,http://<EC2-2-PRIVATE-IP>:3005
+    depends_on:
+      - auth-service
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - PORT=3001
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  foodnet:
+    driver: bridge

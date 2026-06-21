@@ -1,0 +1,60 @@
+services:
+  menu-service-1:
+    build: ./menu-service
+    container_name: menu-service-1
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    environment:
+      - PORT=3002
+      - INSTANCE_NAME=menu-service-1
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  menu-service-2:
+    build: ./menu-service
+    container_name: menu-service-2
+    ports:
+      - "3005:3002"
+    env_file:
+      - .env
+    environment:
+      - PORT=3002
+      - INSTANCE_NAME=menu-service-2
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    environment:
+      - PORT=3003
+    networks:
+      - foodnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  foodnet:
+    driver: bridge
