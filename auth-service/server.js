@@ -1,5 +1,3 @@
-// auth-service/server.js
-// No JWT verification, no RBAC here - that all lives in the gateway.
 require('dotenv').config();
 const express = require('express');
 const connectDB = require('./db');

@@ -53,7 +53,7 @@ function resolveTarget(req, res, prefixLabel) {
   return null;
 }
 
-app.get('/health', (req, res) => res.json({ status: 'ok', service: INSTANCE }));
+app.get('/health', (req, res) => res.json({ status: 'ok', service: 'api-gateway' }));
 
 
 app.use('/auth', (req, res) => {
