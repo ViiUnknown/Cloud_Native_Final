@@ -1,5 +1,3 @@
-// menu-service/server.js
-// Trusts gateway headers (x-user-id, x-user-role); contains NO JWT logic.
 require('dotenv').config();
 const express = require('express');
 const connectDB = require('./db');

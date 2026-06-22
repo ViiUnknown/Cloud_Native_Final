@@ -8,7 +8,7 @@ const menuSchema = new mongoose.Schema(
     available: { type: Boolean, default: true }
   },
   {
-    collection: 'menu', // explicit collection name
+    collection: 'menu',
     timestamps: true
   }
 );

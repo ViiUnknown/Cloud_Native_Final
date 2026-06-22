@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     role: { type: String, enum: ['admin', 'customer'], default: 'customer' }
   },
   {
-    collection: 'users', // explicit -> no pluralization surprises
+    collection: 'users',
     timestamps: true
   }
 );

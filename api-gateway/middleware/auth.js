@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'change_me_in_env';
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// Token check
 function authenticate(req, res, next) {
   const header = req.headers['authorization'] || '';
   const [scheme, token] = header.split(' ');
